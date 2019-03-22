@@ -20,7 +20,7 @@ public class AccountGetResponse extends SMSFactorResponse
 		public Integer credits;
 		public Integer unlimited;
 		public String description;
-		public Integer senderid;
+		public String senderid;
 		public Integer status;
 	}
 	

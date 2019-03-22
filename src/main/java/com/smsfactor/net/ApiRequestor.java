@@ -12,6 +12,7 @@ import com.smsfactor.exception.InsufficientCreditsException;
 import com.smsfactor.exception.InvalidRequestException;
 import com.smsfactor.exception.SMSFactorException;
 import com.smsfactor.exception.UnknownException;
+import com.smsfactor.net.ApiResource.RequestMethod;
 import com.smsfactor.response.SMSFactorResponse;
 
 public class ApiRequestor

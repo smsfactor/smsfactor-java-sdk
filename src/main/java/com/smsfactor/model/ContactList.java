@@ -15,6 +15,7 @@ import com.smsfactor.response.ContactListDeleteResponse;
 import com.smsfactor.response.ContactListGetResponse;
 import com.smsfactor.response.ContactListNpaiResponse;
 import com.smsfactor.response.ContactListRemoveContactResponse;
+import com.smsfactor.response.ContactListnpaiClearResponse;
 
 public abstract class ContactList extends ApiResource
 {
@@ -190,4 +191,17 @@ public abstract class ContactList extends ApiResource
 		
 		return response;
 	}
+
+	/**
+	 * Delete npai from list 
+	 * @param id
+	 * @return
+	 */
+	public static ContactListnpaiClearResponse npaiClear(Integer id) throws SMSFactorException {
+		String url = "/list/"+id+"/npai/clear";
+		ContactListnpaiClearResponse response = staticRequest(RequestMethod.PUT, url,ContactListnpaiClearResponse.class);
+
+		return response;
+	}
+
 }

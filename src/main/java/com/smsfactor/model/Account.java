@@ -7,7 +7,9 @@ import com.smsfactor.net.ApiResource;
 import com.smsfactor.response.AccountCreateResponse;
 import com.smsfactor.response.AccountCreditsResponse;
 import com.smsfactor.response.AccountGetResponse;
+import com.smsfactor.response.AccountRetentionResponse;
 import com.smsfactor.response.AccountSubAccountsResponse;
+import com.smsfactor.response.AccountUpdateRetentionResponse;
 
 public abstract class Account extends ApiResource
 {
@@ -75,6 +77,34 @@ public abstract class Account extends ApiResource
 		String url = "/credits";
 		AccountCreditsResponse response = staticRequest(RequestMethod.GET, url, AccountCreditsResponse.class);
 		
+		return response;
+	}
+
+	/**
+	 * Retrieve your retention informations.
+	 * 
+	 * @return
+	 * @throws SMSFactorException
+	 */
+	public static AccountRetentionResponse retention() throws SMSFactorException {
+		String url = "/retention";
+		AccountRetentionResponse response = staticRequest(RequestMethod.GET, url, AccountRetentionResponse.class);
+
+		return response;
+	}
+	
+	/**
+	 * Update your retention informations
+	 * 
+	 * @param params
+	 * @return
+	 * @throws SMSFactorException
+	 */
+	public static AccountUpdateRetentionResponse update(Map<String, Object> params) throws SMSFactorException {
+		String url = "/retention";
+		ApiParameters smsFactorParams = ApiParameters.initWithParameters(params);
+		AccountUpdateRetentionResponse response = staticRequest(RequestMethod.PUT, url,AccountUpdateRetentionResponse.class,smsFactorParams);
+
 		return response;
 	}
 }

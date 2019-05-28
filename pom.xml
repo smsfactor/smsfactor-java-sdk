@@ -14,6 +14,18 @@
   		<artifactId>google-http-client-gson</artifactId>
   		<version>1.27.0</version>
   	</dependency>
+      <dependency>
+          <groupId>org.apache.xbean</groupId>
+          <artifactId>xbean-reflect</artifactId>
+          <version>3.4</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm</artifactId>
+          <version>5.0.2</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
   <build>
   	<plugins>

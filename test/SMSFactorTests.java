@@ -126,8 +126,6 @@ public class SMSFactorTests {
         Map<String, Object> payload = new HashMap<String, Object>();
         payload.put("sms", sms);
 
-        System.out.println(payload);
-
         CampaignSendResponse response = null;
         try {
             response = Campaign.send(payload, false);
@@ -285,7 +283,7 @@ public class SMSFactorTests {
     /**
      * @depends testAddContactToList
      */
-    public void testCampaignSendToLists(Integer list_id) {
+    public void testCampaignSendToLists(final Integer list_id) {
         Map<String, String> message = new HashMap<String, String>();
         message.put("text", "test skd java");
         message.put("pushtype", "alert");
@@ -294,12 +292,7 @@ public class SMSFactorTests {
         List<Map<String, String>> lists = new ArrayList<Map<String, String>>();
         lists.add(
                 new HashMap<String, String>() {{
-                    put("value", "33600000001");
-                }}
-        );
-        lists.add(
-                new HashMap<String, String>() {{
-                    put("value", "33600000002");
+                    put("value", list_id.toString());
                 }}
         );
 

@@ -77,59 +77,54 @@ public class SMSFactorExample
 ### Campaign
 #### Send a campaign
     // Params
-    Calendar delay = Calendar.getInstance(); // creates calendar
-    delay.setTime(new Date()); // sets calendar time/date
-    delay.add(Calendar.HOUR_OF_DAY, 1); // adds one hour
-    delay.getTime();
-    
-    String json = "{\"sms\": 
-                        {
-                            \"message\": {
-                                 \"text\": \"tests sdk java\",
-                                 \"pushtype\": \"alert\",               //alert(default) or marketing
-                                 \"sender\": \"SDK JAVA\",              //Optional
-                                 \"delay\": "+ delay +"                 //Optional. Omit for immediate send
-                            },
-                            \"recipients\": {
-                                 \"gsm\": [{ 
-                                        \"gsmsmsid\": \"100\", \"value\": \"33601000000\"
-                                  }]
-                            }   
-                        }
-                    }";
+    Map<String, String> message = new HashMap<String, String>();
+    message.put("text", "test skd java");
+    message.put("pushtype", "alert");                //alert(default) or marketing
+    message.put("sender", "SDK");                    //Optional
+    message.put("delay", "2019-06-08 10:21:15");     //Optional. Omit for immediate send
 
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String,Object> map = mapper.readValue(json, Map.class);
+    List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33601000000");
+            }}
+    );
+
+    Map<String, List<Map<String, String>>> recipients = new HashMap<String, List<Map<String, String>>>();
+    recipients.put("gsm", gsm);
+
+    Map<String, Object> sms = new HashMap<String, Object>();
+    sms.put("message", message);
+    sms.put("recipients", recipients);
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("sms", sms);
             
-    CampaignSendResponse response = Campaign.send(map, false);          // True to simulate the campaign (no SMS sent)
+    CampaignSendResponse response = Campaign.send(payload, false);  // True to simulate the campaign (no SMS sent)
 
 #### Send a campaign to a list
     // Params
-    Calendar delay = Calendar.getInstance(); // creates calendar
-    delay.setTime(new Date()); // sets calendar time/date
-    delay.add(Calendar.HOUR_OF_DAY, 1); // adds one hour
-    delay.getTime();
-    
-    String json = "{\"sms\":
-                        {
-                            \"message\":{
-                                \"text\":\"test skd java\",
-                                \"pushtype\":\"alert\",                 //alert(default) or marketing
-                                \"sender\":\"SDK\",                     //Optional
-                                \"delay\": "+ delay +"                  //Optional. Omit for immediate send
-                            },
-                            \"lists\":[
-                                {
-                                    \"value\":\"your_list_id\",
-                                }
-                            ]
-                        }
-                    }";
-                   
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String,Object> param = mapper.readValue(json, Map.class);
+    Map<String, String> message = new HashMap<String, String>();
+    message.put("text", "test skd java");
+    message.put("pushtype", "alert");               //alert(default) or marketing
+    message.put("sender", "SDK");                   //Optional
+    message.put("delay", "2019-06-08 10:21:15");    //Optional. Omit for immediate send
+
+    List<Map<String, String>> lists = new ArrayList<Map<String, String>>();
+    lists.add(
+            new HashMap<String, String>() {{
+                put("value", "your_list_id");
+            }}
+    );
+
+    Map<String, Object> sms = new HashMap<String, Object>();
+    sms.put("message", message);
+    sms.put("lists", lists);
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("sms", sms);
             
-    CampaignSendResponse response = Campaign.sendToLists(param, false); // True to simulate the campaign (no SMS sent)
+    CampaignSendResponse response = Campaign.sendToLists(payload, false); // True to simulate the campaign (no SMS sent)
 
 #### Get information about a campaign
 Use the campaign ticket value returned by our API after sending a campaign to get information about that campaign. 
@@ -142,64 +137,76 @@ Given the last example :
     
 #### Get campaign history
 
-     Map<String, Object> length = new HashMap<String, Object>();
-     length.put("length", 5);
+    Map<String, Object> length = new HashMap<String, Object>();
+    length.put("length", 5);
             
     CampaignHistoryResponse response = Campaign.history(length);        // Get the last 5 campaigns
     
 ### List
 #### Create a list
-    String json = "{\"list\": {
-                            \"name\":\"Your list name\",
-                            \"contacts\": {
-                                    \"gsm\":[ 
-                                                {
-                                                    \"value\":\"33600000001\",
-                                                    \"info1\":\"Lastname\",
-                                                    \"info2\":\"Firstname\",
-                                                    \"info3\":\"Gender\"
-                                                },
-                                                {   
-                                                    \"value\":\"33600000002\",
-                                                    \"info1\":\"Lastname\",
-                                                    \"info2\":\"Firstname\",
-                                                    \"info3\":\"Gender\"
-                                                }
-                                            ]
-                                        }
-                               }
-                    }";
-      ObjectMapper mapper = new ObjectMapper();
-      Map<String,Object> param = mapper.readValue(json, Map.class);
+You can customize each contact with up to 4 optional information
+
+    List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000001");
+                put("info1", "Lastname");
+                put("info2", "Firstname");
+                put("info3", "Gender");
+            }}
+    );
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000002");
+                put("info1", "Lastname");
+                put("info2", "Firstname");
+                put("info3", "Gender");
+            }}
+    );
+
+    Map<String, Object> contacts = new HashMap<String, Object>();
+    contacts.put("gsm", gsm);
+
+    Map<String, Object> object = new HashMap<String, Object>();
+    object.put("name", "sdk list");
+    object.put("contacts", contacts);
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("list", object);
       
-      ContactListCreateResponse response = ContactList.create(param);
-      Integer list_id = response.id;
+    ContactListCreateResponse response = ContactList.create(payload);
+    Integer list_id = response.id;
 
 #### Add contacts to a list
-    String json = "{\"list\": {
-                                \"list_id\": "+ list_id +",
-                                \"contacts\": {
-                                        \"gsm\":[ 
-                                                    {
-                                                        \"value\":\"33600000001\",
-                                                        \"info1\":\"Lastname\",
-                                                        \"info2\":\"Firstname\",
-                                                        \"info3\":\"Gender\"
-                                                    },
-                                                    {   
-                                                        \"value\":\"33600000002\",
-                                                        \"info1\":\"Lastname\",
-                                                        \"info2\":\"Firstname\",
-                                                        \"info3\":\"Gender\"
-                                                    }
-                                                ]
-                                              }
-                               }
-                    }";
-      ObjectMapper mapper = new ObjectMapper();
-      Map<String,Object> param = mapper.readValue(json, Map.class);
-      
-      ContactListAddContactsResponse response = ContactList.addContacts(param);
+    List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000003");
+                put("info1", "Lastname");
+                put("info2", "Firstname");
+                put("info3", "Gender");
+            }}
+    );
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000004");
+                put("info1", "Lastname");
+                put("info2", "Firstname");
+                put("info3", "Gender");
+            }}
+    );
+
+    Map<String, Object> contacts = new HashMap<String, Object>();
+    contacts.put("gsm", gsm);
+
+    Map<String, Object> object = new HashMap<String, Object>();
+    object.put("list", list_id);
+    object.put("contacts", contacts);
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("list", object);
+ 
+    ContactListAddContactsResponse response = ContactList.addContacts(payload);
       
 #### Get a list
     ContactListRemoveContactResponse response = ContactList.removeContact(contact_id); // Use Get list to get contact id
@@ -217,54 +224,61 @@ Given the last example :
     ContactListDeleteResponse response = ContactList.delete(list_id);
     
 #### Add contacts to the blacklist
-     String json = "{\"blacklist\": {
-                                      \"contacts\": {
-                                                \"gsm\":[
-                                                            {
-                                                                \"value\":\"33600000003\"
-                                                            },
-                                                            {   \"value\":\"33600000004\"
-                                                            }
-                                                        ]
-                                                     }
-                                     }
-                     }";
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String,Object> param = mapper.readValue(json, Map.class);
-    ContactListAddToBlacklistResponse response = ContactList.addToBlacklist(param);
+    List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000003");
+            }});
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000004");
+            }});
+
+    Map<String, Object> contacts = new HashMap<String, Object>();
+    contacts.put("gsm", gsm);
+
+    Map<String, Object> object = new HashMap<String, Object>();
+    object.put("contacts", contacts);
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("blacklist", object);
+    ContactListAddToBlacklistResponse response = ContactList.addToBlacklist(payload);
 
 #### Get blacklist
     ContactListBlacklistResponse response = ContactList.blacklist();
     
 #### Add contacts to the NPAI list
-     String json = "{\"npai\": {
-                                  \"contacts\": {
-                                            \"gsm\":[
-                                                        {
-                                                            \"value\":\"33600000003\"
-                                                        },
-                                                        {   \"value\":\"33600000004\"
-                                                        }
-                                                    ]
-                                                 }
-                                 }
-                         }";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> param = mapper.readValue(json, Map.class);
-        ContactListAddToNpaiResponse response = ContactList.addToNpai(param);
+    List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000003");
+            }});
+    gsm.add(
+            new HashMap<String, String>() {{
+                put("value", "33600000004");
+            }});
+
+    Map<String, Object> contacts = new HashMap<String, Object>();
+    contacts.put("gsm", gsm);
+
+    Map<String, Object> object = new HashMap<String, Object>();
+    object.put("contacts", contacts);
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("npai", object);
+    ContactListAddToNpaiResponse response = ContactList.addToNpai(payload);
         
 #### Get NPAI list
     ContactListNpaiResponse response = ContactList.npai();
     
 ### Token
 #### Create a token
-    String json = String json = "{\"token\":{
-                                                \"name\":\"token sdk\"
-                                            }
-                                 }";
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String,Object> param = mapper.readValue(json, Map.class);
-    TokenCreateResponse response = Token.create(param);
+    Map<String, String> token = new HashMap<String, String>();
+    token.put("name", "token sdk");
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("token", token);
+    TokenCreateResponse response = Token.create(payload);
     Integer token_id = response.token_id;
     
 #### Get your tokens
@@ -277,33 +291,30 @@ Given the last example :
 To see all available webhooks, please go to our official documentation.
 
 #### Create a webhook
-    String json = "{\"webhook\":{
-                                    \"type\":\"DLR\",
-                                    \"url\":\"https://yourserverurl.com\"
-                                }
-                    }";
-            
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String,Object> param = mapper.readValue(json, Map.class);
-    WebhookCreateResponse response = Webhook.create(param);
+    Map<String, String> webhook = new HashMap<String, String>();
+    webhook.put("type", "DLR");
+    webhook.put("url", "https://yourserverurl.com");
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("webhook", webhook);
+    WebhookCreateResponse response = Webhook.create(payload);
     Integer webhook_id = response.webhook.webhook_id
     
 #### Get your webhooks
     WebhookAllResponse response = Webhook.all();
     
 #### Update a webhook
-    String json = "{\"webhook\":{
-                                    \"type\":\"MO\",
-                                    \"url\":\"https://yourserverurl.com\"
-                                }
-                    }";
-          
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String,Object> param = mapper.readValue(json, Map.class);
-    WebhookUpdateResponse response = Webhook.update(webhook_id, param);
+    Map<String, String> webhook = new HashMap<String, String>();
+    webhook.put("type", "MO");
+    webhook.put("url", "https://yourserverurl.net");
+
+    Map<String, Object> payload = new HashMap<String, Object>();
+    payload.put("webhook", webhook);
+    WebhookUpdateResponse response = Webhook.update(webhook_id, payload);
     
 #### Delete a webhook
     WebhookDeleteResponse response = Webhook.delete(webhook_id);
+    
 ```
 ## Documentation
 

@@ -56,7 +56,7 @@ AccountCreditsResponse response = Account.credits();
 #### Get account
 ```java
 AccountGetResponse response = Account.get();
-
+```
 #### Get subaccounts
 ```java
 AccountSubAccountsResponse response = Account.subAccounts();

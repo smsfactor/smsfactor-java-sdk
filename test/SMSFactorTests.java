@@ -103,14 +103,32 @@ public class SMSFactorTests {
     public void testCampaignSend() throws IOException {
         setToken(token);
 
-        String json = "{\"sms\": {\"message\": {\"text\": \"tests sdk java\",\"pushtype\": \"marketing\", \"sender\": \"SDK JAVA\"},\"recipients\": {\"gsm\": [{\"gsmsmsid\": \"100\", \"value\": \"33601000000\"}]}}}";
+        Map<String, String> message = new HashMap<String, String>();
+        message.put("text", "test skd java");
+        message.put("pushtype", "alert");
+        message.put("sender", "SDK");
 
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = mapper.readValue(json, Map.class);
+        List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("gsmsmsid", "100");
+                    put("value", "33601000000");
+                }}
+        );
+
+        Map<String, List<Map<String, String>>> recipients = new HashMap<String, List<Map<String, String>>>();
+        recipients.put("gsm", gsm);
+
+        Map<String, Object> sms = new HashMap<String, Object>();
+        sms.put("message", message);
+        sms.put("recipients", recipients);
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("sms", sms);
 
         CampaignSendResponse response = null;
         try {
-            response = Campaign.send(map, false);
+            response = Campaign.send(payload, false);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -123,6 +141,9 @@ public class SMSFactorTests {
         testCampaignCancel(response.ticket);
     }
 
+    /**
+     * @depends testCampaignSend
+     */
     public void testCampaignGet(Integer ticket) throws IOException {
         CampaignGetResponse response = null;
         try {
@@ -137,6 +158,9 @@ public class SMSFactorTests {
         Assert.assertNotEquals(new Long(body.indexOf("campaign")), new Long(-1));
     }
 
+    /**
+     * @depends testCampaignSend
+     */
     public void testCampaignCancel(Integer ticket) throws IOException {
         CampaignCancelResponse response = null;
         try {
@@ -151,7 +175,7 @@ public class SMSFactorTests {
         Assert.assertNotEquals(new Long(body.indexOf("credits")), new Long(-1));
     }
 
-    @Test
+   @Test
     public void testCampaignHistory() throws IOException {
         setToken(token);
 
@@ -170,22 +194,37 @@ public class SMSFactorTests {
         Assert.assertNotEquals(new Long(body.indexOf("campaigns")), new Long(-1));
     }
 
-    @Test
+   @Test
     public void testCreateList() {
         setToken(token);
 
-        String json = "{\"list\":{\"name\":\"sdk list\",\"contacts\":{\"gsm\":[{\"value\":\"33600000001\",\"info1\":\"contact 1\"},{\"value\":\"33600000002\",\"info1\":\"Richard\",\"info2\":\"contact 2\"}]}}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000001");
+                    put("info1", "contact 1");
+                }}
+        );
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000002");
+                    put("info1", "contact 2");
+                }}
+        );
+
+        Map<String, Object> contacts = new HashMap<String, Object>();
+        contacts.put("gsm", gsm);
+
+        Map<String, Object> object = new HashMap<String, Object>();
+        object.put("name", "sdk list");
+        object.put("contacts", contacts);
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("list", object);
 
         ContactListCreateResponse response = null;
         try {
-            response = ContactList.create(map);
+            response = ContactList.create(payload);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -194,7 +233,6 @@ public class SMSFactorTests {
         Assert.assertEquals(new Long(200), new Long(response.getStatusCode()));
         Assert.assertNotEquals(new Long(body.indexOf("contacts")), new Long(-1));
         Assert.assertNotEquals(new Long(body.indexOf("id")), new Long(-1));
-
         testGetList(response.id);
         testAddContactToList(response.id);
         testCampaignSendToLists(response.id);
@@ -204,18 +242,33 @@ public class SMSFactorTests {
      * @depends testCreateList
      */
     public void testAddContactToList(Integer list_id) {
-        String json = "{\"list\":{\"listId\":" + list_id + ",\"contacts\":{\"gsm\":[{\"value\":\"'33600000005'\",\"info1\":\"contact 3\",\"'info3'\":\"contact 3\"},{\"value\":\"33600000005\",\"info2\":\"contact 4\",\"info4\":\"contact 4\"}]}}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000001");
+                    put("info1", "contact 1");
+                }}
+        );
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000002");
+                    put("info1", "contact 2");
+                }}
+        );
+
+        Map<String, Object> contacts = new HashMap<String, Object>();
+        contacts.put("gsm", gsm);
+
+        Map<String, Object> object = new HashMap<String, Object>();
+        object.put("list", list_id);
+        object.put("contacts", contacts);
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("list", object);
 
         ContactListAddContactsResponse response = null;
         try {
-            response = ContactList.addContacts(map);
+            response = ContactList.addContacts(payload);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -230,19 +283,29 @@ public class SMSFactorTests {
     /**
      * @depends testAddContactToList
      */
-    public void testCampaignSendToLists(Integer list_id) {
-        String json = "{\"sms\":{\"message\":{\"text\":\"test skd java\",\"pushtype\":\"alert\",\"sender\":\"SDK\"},\"lists\":[{\"value\":" + list_id + "}]}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void testCampaignSendToLists(final Integer list_id) {
+        Map<String, String> message = new HashMap<String, String>();
+        message.put("text", "test skd java");
+        message.put("pushtype", "alert");
+        message.put("sender", "SDK");
+
+        List<Map<String, String>> lists = new ArrayList<Map<String, String>>();
+        lists.add(
+                new HashMap<String, String>() {{
+                    put("value", list_id.toString());
+                }}
+        );
+
+        Map<String, Object> sms = new HashMap<String, Object>();
+        sms.put("message", message);
+        sms.put("lists", lists);
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("sms", sms);
 
         CampaignSendResponse response = null;
         try {
-            response = Campaign.sendToLists(map, true);
+            response = Campaign.sendToLists(payload, true);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -337,22 +400,34 @@ public class SMSFactorTests {
         Assert.assertEquals(new Long(1), new Long(response.status));
     }
 
-      @Test
+    @Test
     public void testAddToBlacklist() {
         setToken(token);
 
-        String json = "{\"blacklist\":{\"contacts\":{\"gsm\":[{\"value\":\"33600000015\",\"info1\":\"contact 1\"},{\"value\":\"33600000016\",\"info1\":\"contact 2\"}]}}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000001");
+                    put("info1", "contact 1");
+                }});
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000002");
+                    put("info1", "contact 2");
+                }});
+
+        Map<String, Object> contacts = new HashMap<String, Object>();
+        contacts.put("gsm", gsm);
+
+        Map<String, Object> object = new HashMap<String, Object>();
+        object.put("contacts", contacts);
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("blacklist", object);
 
         ContactListAddToBlacklistResponse response = null;
         try {
-            response = ContactList.addToBlacklist(map);
+            response = ContactList.addToBlacklist(payload);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -381,22 +456,34 @@ public class SMSFactorTests {
         Assert.assertNotEquals(new Long(body.indexOf("list")), new Long(-1));
     }
 
-   @Test
+    @Test
     public void testAddToNPAI() {
         setToken(token);
 
-        String json = "{\"npai\":{\"contacts\":{\"gsm\":[{\"value\":\"33600000017\",\"info1\":\"contact 1\"},{\"value\":\"33600000018\",\"info1\":\"contact 2\"}]}}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<Map<String, String>> gsm = new ArrayList<Map<String, String>>();
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000017");
+                    put("info1", "contact 1");
+                }});
+        gsm.add(
+                new HashMap<String, String>() {{
+                    put("value", "33600000018");
+                    put("info1", "contact 2");
+                }});
+
+        Map<String, Object> contacts = new HashMap<String, Object>();
+        contacts.put("gsm", gsm);
+
+        Map<String, Object> object = new HashMap<String, Object>();
+        object.put("contacts", contacts);
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("npai", object);
 
         ContactListAddToNpaiResponse response = null;
         try {
-            response = ContactList.addToNpai(map);
+            response = ContactList.addToNpai(payload);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -408,7 +495,7 @@ public class SMSFactorTests {
         Assert.assertNotEquals(new Long(body.indexOf("added_contacts")), new Long(-1));
     }
 
-      @Test
+    @Test
     public void testGetNPAI() {
         setToken(token);
 
@@ -428,7 +515,7 @@ public class SMSFactorTests {
 
     /** Message **/
 
-      @Test
+    @Test
     public void testSendMessage() {
         setToken(token);
 
@@ -452,22 +539,19 @@ public class SMSFactorTests {
 
     /** Token **/
 
-     @Test
+    @Test
     public void testCreateToken() {
         setToken(token);
 
-        String json = "{\"token\":{\"name\":\"token sdk\"}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Map<String, String> token = new HashMap<String, String>();
+        token.put("name", "token sdk");
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("token", token);
 
         TokenCreateResponse response = null;
         try {
-            response = Token.create(map);
+            response = Token.create(payload);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -480,7 +564,7 @@ public class SMSFactorTests {
         testDeleteToken(response.token_id);
     }
 
-     @Test
+    @Test
     public void testGetTokens() {
         setToken(token);
 
@@ -515,22 +599,20 @@ public class SMSFactorTests {
     }
 
     /** Webhook **/
-     @Test
+   @Test
     public void testCreateWebhook() {
         setToken(token);
 
-        String json = "{\"webhook\":{\"type\":\"DLR\",\"url\":\"https://yourserverurl.com\"}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Map<String, String> webhook = new HashMap<String, String>();
+        webhook.put("type", "DLR");
+        webhook.put("url", "https://yourserverurl.com");
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("webhook", webhook);
 
         WebhookCreateResponse response = null;
         try {
-            response = Webhook.create(map);
+            response = Webhook.create(payload);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -547,18 +629,16 @@ public class SMSFactorTests {
      * @depends testCreateWebhook
      */
     public void testUpdateWebhook(Integer webhook_id) {
-        String json = "{\"webhook\":{\"type\":\"MO\",\"url\":\"https://yourserverurl.com\"}}";
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> map = null;
-        try {
-            map = mapper.readValue(json, Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Map<String, String> webhook = new HashMap<String, String>();
+        webhook.put("type", "MO");
+        webhook.put("url", "https://yourserverurl.com");
+
+        Map<String, Object> payload = new HashMap<String, Object>();
+        payload.put("webhook", webhook);
 
         WebhookUpdateResponse response = null;
         try {
-            response = Webhook.update(webhook_id, map);
+            response = Webhook.update(webhook_id, payload);
         } catch (SMSFactorException e) {
             e.printStackTrace();
         }
@@ -571,7 +651,7 @@ public class SMSFactorTests {
         testDeleteWebhook(response.webhook.webhook_id);
     }
 
-     @Test
+    @Test
     public void testGetWebhooks() {
         setToken(token);
 

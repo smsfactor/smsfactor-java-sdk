@@ -22,8 +22,8 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Create a list.
 	 * 
-	 * @param params
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return information about the created list
 	 * @throws SMSFactorException
 	 */
 	public static ContactListCreateResponse create(Map<String, Object> params) throws SMSFactorException
@@ -39,7 +39,7 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Get all your lists.
 	 * 
-	 * @return
+	 * @return all lists
 	 * @throws SMSFactorException
 	 */
 	public static ContactListAllResponse all() throws SMSFactorException
@@ -54,8 +54,8 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Get one of your lists.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the list id
+	 * @return detail about a list
 	 * @throws SMSFactorException
 	 */
 	public static ContactListGetResponse get(Integer id) throws SMSFactorException
@@ -70,8 +70,8 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Delete one of your lists.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the list id
+	 * @return success message
 	 * @throws SMSFactorException
 	 */
 	public static ContactListDeleteResponse delete(Integer id) throws SMSFactorException
@@ -86,8 +86,8 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Add contacts to a list.
 	 * 
-	 * @param params
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return number of contact added 
 	 * @throws SMSFactorException
 	 */
 	public static ContactListAddContactsResponse addContacts(Map<String, Object> params) throws SMSFactorException
@@ -103,8 +103,8 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Remove a contact from a list.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the contact id
+	 * @return success message
 	 * @throws SMSFactorException
 	 */
 	public static ContactListRemoveContactResponse removeContact(String id) throws SMSFactorException
@@ -119,8 +119,8 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Deduplicate a list.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the list id
+	 * @return number of removed contact
 	 * @throws SMSFactorException
 	 */
 	public static ContactListDeduplicateResponse deduplicate(Integer id) throws SMSFactorException
@@ -135,8 +135,7 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Get your blacklist.
 	 * 
-	 * @param id
-	 * @return
+	 * @return the blacklist contacts
 	 * @throws SMSFactorException
 	 */
 	public static ContactListBlacklistResponse blacklist() throws SMSFactorException
@@ -151,8 +150,8 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Add contacts to your blacklist.
 	 * 
-	 * @param params
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the number of contacts added
 	 * @throws SMSFactorException
 	 */
 	public static ContactListAddToBlacklistResponse addToBlacklist(Map<String, Object> params) throws SMSFactorException
@@ -168,7 +167,7 @@ public abstract class ContactList extends ApiResource
 	/**
 	 * Get your NPAI list (unassigned numbers).
 	 * 
-	 * @return
+	 * @return the NPAI list
 	 * @throws SMSFactorException
 	 */
 	public static ContactListNpaiResponse npai() throws SMSFactorException
@@ -182,6 +181,9 @@ public abstract class ContactList extends ApiResource
 	
 	/**
 	 * Add contacts to the NPAI list (unassigned numbers).
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the number of contacts added
+	 * @throws SMSFactorException
 	 */
 	public static ContactListAddToNpaiResponse addToNpai(Map<String, Object> params) throws SMSFactorException
 	{
@@ -194,8 +196,8 @@ public abstract class ContactList extends ApiResource
 
 	/**
 	 * Delete npai from list 
-	 * @param id
-	 * @return
+	 * @param id the list id
+	 * @return the number of removed contact from the list
 	 */
 	public static ContactListnpaiClearResponse npaiClear(Integer id) throws SMSFactorException {
 		String url = "/list/"+id+"/npai/clear";

@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smsfactor.SMSFactor;
 import com.smsfactor.model.*;
 import com.smsfactor.response.*;
@@ -10,7 +9,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.*;
 
-public class SMSFactorTests {
+public class SMSFactorTest {
+    
     private static String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMTEyNCIsImlhdCI6MTU1NjAxMDEyNX0.mvbtwke3ji2UZ_npySJ-LTepr5NEud9BIdtBT68RgXQ";
 
     public static void setToken(String token) {

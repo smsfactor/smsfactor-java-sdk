@@ -22,8 +22,8 @@ public abstract class Account extends ApiResource
 	/**
 	 * Create an account.
 	 * 
-	 * @param params
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the account information if success
 	 * @throws SMSFactorException
 	 */
 	public static AccountCreateResponse create(Map<String, Object> params) throws SMSFactorException
@@ -37,9 +37,9 @@ public abstract class Account extends ApiResource
 	
 	
 	/**
-	 * Retrieve your account informations.
+	 * Retrieve your account information
 	 * 
-	 * @return
+	 * @return the account information
 	 * @throws SMSFactorException
 	 */
 	public static AccountGetResponse get() throws SMSFactorException
@@ -54,7 +54,7 @@ public abstract class Account extends ApiResource
 	/**
 	 * Get all your sub-accounts.
 	 * 
-	 * @return
+	 * @return the sub-accounts list
 	 * @throws SMSFactorException
 	 */
 	public static AccountSubAccountsResponse subAccounts() throws SMSFactorException
@@ -69,7 +69,7 @@ public abstract class Account extends ApiResource
 	/**
 	 * Get remaining credits on your account.
 	 * 
-	 * @return
+	 * @return the number of remaining credit
 	 * @throws SMSFactorException
 	 */
 	public static AccountCreditsResponse credits() throws SMSFactorException
@@ -81,9 +81,9 @@ public abstract class Account extends ApiResource
 	}
 
 	/**
-	 * Retrieve your retention informations.
+	 * Retrieve your retention information.
 	 * 
-	 * @return
+	 * @return the retention information
 	 * @throws SMSFactorException
 	 */
 	public static AccountRetentionResponse retention() throws SMSFactorException {
@@ -94,10 +94,10 @@ public abstract class Account extends ApiResource
 	}
 	
 	/**
-	 * Update your retention informations
+	 * Update your retention information
 	 * 
-	 * @param params
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the new retention information
 	 * @throws SMSFactorException
 	 */
 	public static AccountUpdateRetentionResponse update(Map<String, Object> params) throws SMSFactorException {

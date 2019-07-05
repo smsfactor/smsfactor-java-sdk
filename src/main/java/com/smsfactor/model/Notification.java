@@ -13,7 +13,7 @@ public abstract class Notification extends ApiResource
     /**
      * Get all your notification information.
      * 
-     * @return
+     * @return the notification information
      * @throws SMSFactorException
      */
     public static NotificationGetReponse get() throws SMSFactorException {
@@ -26,8 +26,8 @@ public abstract class Notification extends ApiResource
     /**
      * Update your notification information.
      * 
-     * @param params
-     * @return
+     * @param params the body params, see offical documentation https://dev.smsfactor.com
+     * @return a success message
      * @throws SMSFactorException
      */
 	public static NotificationUpdateResponse update(Map<String, Object> params) throws SMSFactorException {

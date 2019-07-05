@@ -20,8 +20,8 @@ public abstract class Webhook extends ApiResource
 	/**
 	 * Create a webhook.
 	 * 
-	 * @param params
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return a success message
 	 * @throws SMSFactorException
 	 */
 	public static WebhookCreateResponse create(Map<String, Object> params) throws SMSFactorException
@@ -37,9 +37,9 @@ public abstract class Webhook extends ApiResource
 	/**
 	 * Update a webhook.
 	 * 
-	 * @param id
-	 * @param params
-	 * @return
+	 * @param id the webhook id
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return a success message
 	 * @throws SMSFactorException
 	 */
 	public static WebhookUpdateResponse update(Integer id, Map<String, Object> params) throws SMSFactorException
@@ -55,7 +55,7 @@ public abstract class Webhook extends ApiResource
 	/**
 	 * Get all your webhooks.
 	 * 
-	 * @return
+	 * @return a webhook list
 	 * @throws SMSFactorException
 	 */
 	public static WebhookAllResponse all() throws SMSFactorException
@@ -70,8 +70,8 @@ public abstract class Webhook extends ApiResource
 	/**
 	 * Delete one of your webhooks.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the webhook id
+	 * @return a success message
 	 * @throws SMSFactorException
 	 */
 	public static WebhookDeleteResponse delete(Integer id) throws SMSFactorException

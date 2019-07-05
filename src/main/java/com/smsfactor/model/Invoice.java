@@ -11,7 +11,7 @@ public abstract class Invoice extends ApiResource {
     /**
      * Get all your facture information.
      * 
-     * @return
+     * @return the invoices
      * @throws SMSFactorException
      * @throws IOException
      */
@@ -25,8 +25,8 @@ public abstract class Invoice extends ApiResource {
     /**
      * Get facture.
      * 
-     * @param id
-     * @return
+     * @param id the invoice id
+     * @return the requested invoice information
      * @throws SMSFactorException
      * @throws IOException
      */
@@ -40,8 +40,8 @@ public abstract class Invoice extends ApiResource {
     /**
      * Download facture.
      * 
-     * @param id
-     * @return
+     * @param id the invoice id
+     * @return the invoice file
      * @throws SMSFactorException
      * @throws IOException
      */

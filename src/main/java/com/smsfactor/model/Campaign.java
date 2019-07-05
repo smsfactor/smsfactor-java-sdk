@@ -19,15 +19,22 @@ public abstract class Campaign extends SMS {
 	/**
 	 * Send, or simulate, a campaign.
 	 * 
-	 * @param params
-	 * @param simulate
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the summary of the campaign
 	 * @throws SMSFactorException
 	 */
 	public static CampaignSendResponse send(Map<String, Object> params) throws SMSFactorException {
 		return send(params, false);
 	}
 
+	/**
+	 * Send, or simulate, a campaign.
+	 * 
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @param simulate set to true to simulate to campaign (=no sending)
+	 * @return the summary of the campaign
+	 * @throws SMSFactorException
+	 */
 	public static CampaignSendResponse send(Map<String, Object> params, boolean simulate) throws SMSFactorException {
 		String url = simulate ? "/send/simulate" : "/send";
 		ApiParameters smsFactorParams = ApiParameters.initWithParameters(params);
@@ -40,15 +47,22 @@ public abstract class Campaign extends SMS {
 	/**
 	 * Send, or simulate, a campaign to lists.
 	 * 
-	 * @param params
-	 * @param simulate
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the summary of the campaign
 	 * @throws SMSFactorException
 	 */
 	public static CampaignSendResponse sendToLists(Map<String, Object> params) throws SMSFactorException {
 		return sendToLists(params, false);
 	}
 
+	/**
+	 * Send, or simulate, a campaign to lists.
+	 * 
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @param simulate set to true to simulate to campaign (=no sending)
+	 * @return the summary of the campaign
+	 * @throws SMSFactorException
+	 */
 	public static CampaignSendResponse sendToLists(Map<String, Object> params, boolean simulate)
 			throws SMSFactorException {
 		String url = simulate ? "/send/lists/simulate" : "/send/lists";
@@ -62,14 +76,20 @@ public abstract class Campaign extends SMS {
 	/**
 	 * Get campaigns history.
 	 * 
-	 * @param params
-	 * @return
+	 * @return the campaigns history
 	 * @throws SMSFactorException
 	 */
 	public static CampaignHistoryResponse history() throws SMSFactorException {
 		return history(null);
 	}
 
+	/**
+	 * Get campaigns history.
+	 * 
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the campaigns history
+	 * @throws SMSFactorException
+	 */
 	public static CampaignHistoryResponse history(Map<String, Object> params) throws SMSFactorException {
 		String url = "/campaigns";
 		ApiParameters smsFactorParams = ApiParameters.initWithQueryStringParameters(params);
@@ -82,8 +102,8 @@ public abstract class Campaign extends SMS {
 	/**
 	 * Get one of your campaigns.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the campaign id
+	 * @return details about the campaign
 	 * @throws SMSFactorException
 	 */
 	public static CampaignGetResponse get(Integer id) throws SMSFactorException {
@@ -96,8 +116,8 @@ public abstract class Campaign extends SMS {
 	/**
 	 * Cancel a future campaign.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the campaign id
+	 * @return success message
 	 * @throws SMSFactorException
 	 */
 	public static CampaignCancelResponse cancel(Integer id) throws SMSFactorException {
@@ -110,8 +130,8 @@ public abstract class Campaign extends SMS {
 	/**
 	 * npai to blacklist.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the campaign id
+	 * @return the number of blacklisted numbers
 	 * @throws SMSFactorException
 	 */
 	public static CampaignNpaiToBlacklistResponse npaiToBlacklist(Integer id) throws SMSFactorException {

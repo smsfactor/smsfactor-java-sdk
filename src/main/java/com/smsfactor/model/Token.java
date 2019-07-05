@@ -13,7 +13,7 @@ public abstract class Token extends ApiResource
 	/**
 	 * Get all your tokens.
 	 * 
-	 * @return
+	 * @return the token list
 	 * @throws SMSFactorException
 	 */
 	public static TokenAllResponse all() throws SMSFactorException
@@ -28,8 +28,8 @@ public abstract class Token extends ApiResource
 	/**
 	 * Create a token.
 	 * 
-	 * @param params
-	 * @return
+	 * @param params the body params, see offical documentation https://dev.smsfactor.com
+	 * @return the created token
 	 * @throws SMSFactorException
 	 */
 	public static TokenCreateResponse create(Map<String, Object> params) throws SMSFactorException
@@ -45,8 +45,8 @@ public abstract class Token extends ApiResource
 	/**
 	 * Delete one of your tokens.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id the token id
+	 * @return a success message
 	 * @throws SMSFactorException
 	 */
 	public static TokenDeleteResponse delete(Integer id) throws SMSFactorException

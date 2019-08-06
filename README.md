@@ -1,15 +1,27 @@
-# SMSFactor SDK Java
+# SMSFactor Client library for Java
 
-You can sign up for a SMSFactor account at https://www.smsfactor.com.
+The Java client library makes it easy for developers to use SMSFactor's API.
 
-## Documentation
+In order to use it, make sure to have an account. You can register [here](https://www.smsfactor.com/en/registration/?utm_source=github&utm_campaign=Inscription&spid=17146). Once your account is created, you need to generate your first [API token](https://dev.smsfactor.com/en/api/sms/token/create-token).
+You can find the complete documentation of our API [here](https://dev.smsfactor.com/).
 
-Please see https://dev.smsfactor.com/fr/api/sms/bien-commencer for up-to-date documentation.
+# Installation
 
-## Installation
+## Maven
 
-You'll need to manually install the following JARs:
-* The SMSFactor JAR from https://xxx.xxxxxx.xx
+```xml
+<dependency>
+  <groupId>com.smsfactor</groupId>
+  <artifactId>smsfactor</artifactId>
+  <version>1.0</version>
+</dependency>
+```
+
+## Gradle
+
+```
+implementation 'com.smsfactor:smsfactor:1.0'
+```
 
 ## Usage
 
@@ -28,7 +40,7 @@ public class SMSFactorExample
 {
     public static void main(String[] args) {
         try {
-            SMSFactor.apiToken = "xxxxxxxxxxxxxxxxx";
+            SMSFactor.apiToken = "your.token";
         
             // Parameters
             Map<String, Object> params = new HashMap<String, Object>();

@@ -2,8 +2,8 @@ package com.smsfactor.response;
 
 import java.util.List;
 
-public class InvoiceGetReponse extends SMSFactorResponse {
-    public class invoices 
+public class InvoiceGetResponse extends SMSFactorResponse {
+    public class invoices
     {
         public String id;
         public String name;
@@ -22,6 +22,6 @@ public class InvoiceGetReponse extends SMSFactorResponse {
         public String unit_price;
         public String quantities;
         public String price;
-    }    
-    public List<products> lists;    
+    }
+    public List<products> lists;
 }

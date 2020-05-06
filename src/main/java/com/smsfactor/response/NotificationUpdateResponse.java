@@ -1,6 +1,6 @@
 package com.smsfactor.response;
 
-public class NotificationUpdateResponse extends NotificationGetReponse {
+public class NotificationUpdateResponse extends SMSFactorResponse {
     public class Notification {
 
         public String alert_email;

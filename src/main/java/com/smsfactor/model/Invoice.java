@@ -5,41 +5,41 @@ import java.io.InputStream;
 
 import com.smsfactor.exception.SMSFactorException;
 import com.smsfactor.net.ApiResource;
-import com.smsfactor.response.InvoiceGetReponse;
+import com.smsfactor.response.InvoiceGetResponse;
 
 public abstract class Invoice extends ApiResource {
     /**
      * Get all your facture information.
-     * 
+     *
      * @return the invoices
      * @throws SMSFactorException
      * @throws IOException
      */
-    public static InvoiceGetReponse get() throws SMSFactorException {
+    public static InvoiceGetResponse get() throws SMSFactorException {
         String url = "/account/invoice";
-        InvoiceGetReponse response = staticRequest(RequestMethod.GET, url, InvoiceGetReponse.class);
+        InvoiceGetResponse response = staticRequest(RequestMethod.GET, url, InvoiceGetResponse.class);
 
         return response;
     }
 
     /**
      * Get facture.
-     * 
+     *
      * @param id the invoice id
      * @return the requested invoice information
      * @throws SMSFactorException
      * @throws IOException
      */
-    public static InvoiceGetReponse get(Integer id) throws SMSFactorException {
+    public static InvoiceGetResponse get(Integer id) throws SMSFactorException {
         String url = "/account/invoice/" + id;
-        InvoiceGetReponse response = staticRequest(RequestMethod.GET, url, InvoiceGetReponse.class);
+        InvoiceGetResponse response = staticRequest(RequestMethod.GET, url, InvoiceGetResponse.class);
 
         return response;
     }
 
     /**
      * Download facture.
-     * 
+     *
      * @param id the invoice id
      * @return the invoice file
      * @throws SMSFactorException

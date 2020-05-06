@@ -5,27 +5,27 @@ import java.util.Map;
 import com.smsfactor.exception.SMSFactorException;
 import com.smsfactor.net.ApiParameters;
 import com.smsfactor.net.ApiResource;
-import com.smsfactor.response.NotificationGetReponse;
+import com.smsfactor.response.NotificationGetResponse;
 import com.smsfactor.response.NotificationUpdateResponse;
 
 public abstract class Notification extends ApiResource
 {
     /**
      * Get all your notification information.
-     * 
+     *
      * @return the notification information
      * @throws SMSFactorException
      */
-    public static NotificationGetReponse get() throws SMSFactorException {
+    public static NotificationGetResponse get() throws SMSFactorException {
         String url = "/notification/balance";
-        NotificationGetReponse response = staticRequest(RequestMethod.GET, url, NotificationGetReponse.class);
+        NotificationGetResponse response = staticRequest(RequestMethod.GET, url, NotificationGetResponse.class);
 
         return response;
     }
 
     /**
      * Update your notification information.
-     * 
+     *
      * @param params the body params, see offical documentation https://dev.smsfactor.com
      * @return a success message
      * @throws SMSFactorException
